@@ -23,4 +23,5 @@ $('login').addEventListener('submit',async event=>{
  }catch(error){session=null;$('status').textContent=error.message==='unsupported'?'Нужен современный браузер с HTTPS.':'Не удалось открыть архив. Проверь пароль и подключение.'}
  finally{$('enter').disabled=false}
 });
-$('lock').addEventListener('click',async()=>{session=null;$('tree').src='about:blank';try{await tell(registration.active,{type:'lock'})}finally{location.replace('./')}});
+async function lockArchive(){session=null;$('tree').src='about:blank';try{await tell(registration.active,{type:'lock'})}finally{location.replace('./')}}
+window.addEventListener('message',event=>{if(event.origin===location.origin&&event.source===$('tree').contentWindow&&event.data?.type==='archive-lock')lockArchive()});
